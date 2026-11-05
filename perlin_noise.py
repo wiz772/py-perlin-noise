@@ -72,7 +72,7 @@ class PerlinNoise:
         return (top_left_dot_product, top_right_dot_product, bottom_left_dot_product, bottom_right_dot_product)
 
     def _fade(self, t: float) -> float:
-        return (6*t**5 - 15*t**4 + 10*t**3)
+        return t**3 * (t * (6*t - 15) + 10)
 
     def _lerp(self, a:float, b:float, t:float) -> float:
         return a + t * (b - a)
