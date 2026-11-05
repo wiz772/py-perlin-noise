@@ -2,7 +2,13 @@ import math
 import random
 
 class PerlinNoise:
-    def __init__(self, width, height):
+    def __init__(self, width: int, height: int):
+        if type(width) is not int or type(height) is not int:
+            raise TypeError("width and height should only be integers")
+
+        if width <= 0 or height <= 0:
+            raise ValueError("width and height should be positive integers")
+
         self.width = width
         self.height = height
         self.gradients = self._create_gradients_matrice(self.width, self.height)
@@ -29,7 +35,7 @@ class PerlinNoise:
             matrice.append(row_list)
         return matrice
 
-    def _calculate_vectors(self, x: float, y: float):
+    def _calculate_vectors(self, x: float, y: float) -> tuple:
         cell_x = math.floor(x)
         cell_y = math.floor(y)
 
@@ -45,10 +51,10 @@ class PerlinNoise:
 
         return (top_left_vector, top_right_vector, bottom_left_vector, bottom_right_vector)
 
-    def _dot_product(self, vector_a, vector_b) -> float:
+    def _dot_product(self, vector_a: tuple, vector_b: tuple) -> float:
         return (vector_a[0] * vector_b[0] + vector_a[1] * vector_b[1])
 
-    def _get_all_dot_products(self, x, y) -> tuple:
+    def _get_all_dot_products(self, x: float, y: float) -> tuple:
         cell_x = math.floor(x)
         cell_y = math.floor(y)
         top_left_vector, top_right_vector, bottom_left_vector, bottom_right_vector = self._calculate_vectors(x, y)
@@ -67,7 +73,7 @@ class PerlinNoise:
     def _lerp(self, a:float, b:float, t:float) -> float:
         return a + t * (b - a)
 
-    def _interpolate_dot_products(self, x, y):
+    def _interpolate_dot_products(self, x: float, y: float) -> float:
         top_left_dot_product, top_right_dot_product, bottom_left_dot_product, bottom_right_dot_product = self._get_all_dot_products(x, y)
 
         cell_x = math.floor(x)
@@ -84,7 +90,7 @@ class PerlinNoise:
         interpolated_top_and_bottom = self._lerp(interpolated_top, interpolated_bottom, v)
         return interpolated_top_and_bottom
 
-    def get_noise(self, x, y):
+    def get_noise(self, x: float, y: float) -> float:
         if x < 0 or y < 0 or x >= self.width or y >= self.height:
             raise ValueError(f"coordinates ({x}, {y}) are outside of the grid | grid width/height: {self.width}/{self.height}")
         return self._interpolate_dot_products(x, y)
