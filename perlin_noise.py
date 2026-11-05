@@ -2,7 +2,7 @@ import math
 import random
 
 class PerlinNoise:
-    def __init__(self, width: int, height: int):
+    def __init__(self, width: int, height: int, seed: int | None = None):
         if type(width) is not int or type(height) is not int:
             raise TypeError("width and height should only be integers")
 
@@ -11,10 +11,14 @@ class PerlinNoise:
 
         self.width = width
         self.height = height
+
+        self.seed = seed if seed is not None else random.randint(0, 2**32 - 1)
+        self.rng = random.Random(self.seed)
+
         self.gradients = self._create_gradients_matrice(self.width, self.height)
     
     def _generate_random_angle(self) -> float:
-        return random.uniform(0, 2*math.pi)
+        return self.rng.uniform(0, 2*math.pi)
 
     def _create_gradients_matrice(self, width: int, height: int) -> list: 
         matrice = []

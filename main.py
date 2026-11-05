@@ -1,7 +1,7 @@
 from perlin_noise import PerlinNoise
 from noise_image import NoiseImage
 def main():
-    new_grid = PerlinNoise(10,10)
+    new_grid = PerlinNoise(10,10, 2)
     noise = new_grid.get_noise(1.4,5)
     print(noise)
 
